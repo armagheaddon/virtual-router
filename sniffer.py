@@ -1,4 +1,9 @@
-import pydivert
+try:
+    import pydivert
+except ImportError:
+    import dependencies
+    dependencies.install_pydivert()
+    import pydivert
 
 w = pydivert.WinDivert()
 
