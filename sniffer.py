@@ -5,12 +5,16 @@ except ImportError:
     dependencies.install_pydivert()
     import pydivert
 
-w = pydivert.WinDivert()
 
-w.open()  # packets will be captured from now on
+class Sniffer():
 
-packet = w.recv()  # read a single packet
-print(packet)
-w.send(packet)  # re-inject the packet into the network stack
+    def __init__(self):
+        w = pydivert.WinDivert()
 
-w.close()  # stop capturing packets 
+        w.open()  # packets will be captured from now on
+
+        packet = w.recv()  # read a single packet
+        print(packet)
+        w.send(packet)  # re-inject the packet into the network stack
+
+        w.close()  # stop capturing packets 

@@ -20,7 +20,7 @@ print gateway
 print ip
 print subnetmask
 # change to json
-open("previous_configurations", 'w').write(ip + " " + subnetmask + " " + gateway)
+open("previous_configurations.txt", 'w').write(ip + " " + subnetmask + " " + gateway)
 
 # ip = 
 # subnetmask = 
@@ -29,4 +29,4 @@ open("previous_configurations", 'w').write(ip + " " + subnetmask + " " + gateway
 # Set IP address, subnetmask and default gateway
 # Note: EnableStatic() and SetGateways() methods require *lists* of values to be passed
 #nic.EnableStatic(IPAddress=[ip],SubnetMask=[subnetmask])
-nic.SetGateways(DefaultIPGateway=[gateway])
+#nic.SetGateways(DefaultIPGateway=[gateway])
