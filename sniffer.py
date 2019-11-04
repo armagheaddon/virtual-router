@@ -1,3 +1,5 @@
+import thread
+import socket
 try:
     import pydivert
 except ImportError:
@@ -6,15 +8,24 @@ except ImportError:
     import pydivert
 
 
-class Sniffer():
+class Router():
 
     def __init__(self):
-        w = pydivert.WinDivert()
+        self.my_ip = socket.gethostbyname(socket.gethostname())
 
-        w.open()  # packets will be captured from now on
+        self.WinDiv = pydivert.WinDivert(f"ip.DstAddr != {self.my_ip}")  # filter
+        self.WinDiv.open()  # packets will be captured from now on
+        thread.start_new_thread(self.receive_packets)
 
-        packet = w.recv()  # read a single packet
-        print(packet)
-        w.send(packet)  # re-inject the packet into the network stack
+        # self.WinDiv.close()  # stop capturing packets 
 
-        w.close()  # stop capturing packets 
+    def receive_packets(self):
+        while self.WinDiv.is_open():
+            packet = self.WinDiv.recv()  # read a single packet
+            packet.direction = pydivert.Direction.OUTBOUND 
+            # print(packet)
+            pydivert.Packet()
+            self.WinDiv.send(packet)  # re-inject the packet into the network stack
+
+
+r = Router()
